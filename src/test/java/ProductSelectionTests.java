@@ -51,7 +51,7 @@ public class ProductSelectionTests {
         testBookInfo.add("Author: Kathy Sierra, Trisha Gee, Bert Bates");
         testBookInfo.add("Kindle Price: $43.22");
         testBookInfo.add("Paperback Price: $21.99");
-        testBookInfo.add("Is a bestseller: false");
+        testBookInfo.add("Is a Best Seller: false");
         mainPage.selectBooksOption();
         mainPage.typeIntoSearchField(productName);
         mainPage.clickSearchButton();

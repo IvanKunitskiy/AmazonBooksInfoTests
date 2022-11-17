@@ -41,9 +41,9 @@ public class ProductItem {
 
         List<WebElement> elems = driver.findElements(isBestseller);
         if (elems.size() == 0) {
-            itemInfo.add("Is a bestseller: false");
+            itemInfo.add("Is a Best Seller: false");
         } else {
-            itemInfo.add("Is a bestseller: true");
+            itemInfo.add("Is a Sest Seller: true");
         }
         return itemInfo;
     }
