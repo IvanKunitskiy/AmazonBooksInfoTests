@@ -11,14 +11,20 @@ public class ProductPage {
     }
 
     private final By pageId = By.xpath("//span[@class='a-color-state a-text-bold']");
-    private final By bookName = By.xpath("//span[text()='Head First Java: A Brain-Friendly Guide']");
+    private final By book1Name = By.xpath("//span[text()='Head First Java: A Brain-Friendly Guide']");
+    private final By book2Name = By.xpath("//span[text()='Effective Java']");
 
     public String checkPageId() {
         return driver.findElement(pageId).getText();
     }
 
-    public ProductItem selectItem() {
-        driver.findElement(bookName).click();
+    public ProductItem selectFirstItem() {
+        driver.findElement(book1Name).click();
+        return new ProductItem(driver);
+    }
+
+    public ProductItem selectSecondItem() {
+        driver.findElement(book2Name).click();
         return new ProductItem(driver);
     }
 }

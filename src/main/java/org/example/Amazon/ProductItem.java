@@ -43,7 +43,7 @@ public class ProductItem {
         if (elems.size() == 0) {
             itemInfo.add("Is a Best Seller: false");
         } else {
-            itemInfo.add("Is a Sest Seller: true");
+            itemInfo.add("Is a Best Seller: true");
         }
         return itemInfo;
     }

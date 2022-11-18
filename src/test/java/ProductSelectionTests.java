@@ -45,7 +45,7 @@ public class ProductSelectionTests {
     }
 
     @Test
-    public void bookInfoTest() {
+    public void firstBookInfoTest() {
         List<String> testBookInfo = new ArrayList<>();
         testBookInfo.add("Title: Head First Java: A Brain-Friendly Guide");
         testBookInfo.add("Author: Kathy Sierra, Trisha Gee, Bert Bates");
@@ -56,7 +56,25 @@ public class ProductSelectionTests {
         mainPage.typeIntoSearchField(productName);
         mainPage.clickSearchButton();
         productPage = new ProductPage(driver);
-        productPage.selectItem();
+        productPage.selectFirstItem();
+        productItem = new ProductItem(driver);
+        List <String> bookInfo = productItem.getItemInfo();
+        Assert.assertEquals(testBookInfo, bookInfo);
+    }
+
+    @Test
+    public void secondBookInfoTest() {
+        List<String> testBookInfo = new ArrayList<>();
+        testBookInfo.add("Title: Effective Java");
+        testBookInfo.add("Author: Joshua Bloch");
+        testBookInfo.add("Kindle Price: $29.69");
+        testBookInfo.add("Paperback Price: $41.39");
+        testBookInfo.add("Is a Best Seller: true");
+        mainPage.selectBooksOption();
+        mainPage.typeIntoSearchField(productName);
+        mainPage.clickSearchButton();
+        productPage = new ProductPage(driver);
+        productPage.selectSecondItem();
         productItem = new ProductItem(driver);
         List <String> bookInfo = productItem.getItemInfo();
         Assert.assertEquals(testBookInfo, bookInfo);
