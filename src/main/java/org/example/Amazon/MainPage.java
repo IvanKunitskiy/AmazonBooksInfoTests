@@ -12,6 +12,7 @@ public class MainPage {
     private final By productSpan = By.xpath("//span[@id='nav-search-label-id']");
     private final By searchField = By.xpath("//input[@id='twotabsearchtextbox']");
     private final By submitButton = By.xpath("//input[@type='submit']");
+
     public MainPage selectBooksOption() {
         driver.findElement(booksOption).click();
         return this;
@@ -21,15 +22,15 @@ public class MainPage {
         return driver.findElement(productSpan).getText();
     }
 
-    public ProductPage clickSearchButton() {
+    public ProductsPage clickSearchButton() {
         driver.findElement(submitButton).submit();
-        return new ProductPage(driver);
+        return new ProductsPage(driver);
     }
 
-    public ProductPage typeIntoSearchField(String input) {
+    public ProductsPage typeIntoSearchField(String input) {
         selectBooksOption();
         driver.findElement(searchField).sendKeys(input);
         clickSearchButton();
-        return new ProductPage(driver);
+        return new ProductsPage(driver);
     }
 }

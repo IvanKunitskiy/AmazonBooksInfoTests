@@ -1,21 +1,19 @@
+import org.example.Amazon.Book;
 import org.example.Amazon.MainPage;
 import org.example.Amazon.ProductItem;
-import org.example.Amazon.ProductPage;
+import org.example.Amazon.ProductsPage;
 import org.junit.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ProductSelectionTests {
     private WebDriver driver;
     private MainPage mainPage;
-    private ProductPage productPage;
+    private ProductsPage productPage;
     private ProductItem productItem;
     private final static String URL = "https://www.amazon.com/";
-    private final static String productName = "Java";
+    private final static String productName = "Head First Java, 2nd Edition";
 
     @Before
     public void setDriver() {
@@ -39,45 +37,69 @@ public class ProductSelectionTests {
         mainPage.selectBooksOption();
         mainPage.typeIntoSearchField(productName);
         mainPage.clickSearchButton();
-        productPage = new ProductPage(driver);
+        productPage = new ProductsPage(driver);
         String pageIdentification = productPage.checkPageId();
         Assert.assertEquals("\"" + productName + "\"", pageIdentification);
     }
 
     @Test
-    public void firstBookInfoTest() {
-        List<String> testBookInfo = new ArrayList<>();
-        testBookInfo.add("Title: Head First Java: A Brain-Friendly Guide");
-        testBookInfo.add("Author: Kathy Sierra, Trisha Gee, Bert Bates");
-        testBookInfo.add("Kindle Price: $43.22");
-        testBookInfo.add("Paperback Price: $21.99");
-        testBookInfo.add("Is a Best Seller: false");
+    public void testItemTest() {
+        Book testBook = new Book("Head First Java, 2nd Edition","Kathy Sierra, Bert Bates", 19.74, false);
+
         mainPage.selectBooksOption();
         mainPage.typeIntoSearchField(productName);
         mainPage.clickSearchButton();
-        productPage = new ProductPage(driver);
+        productPage = new ProductsPage(driver);
         productPage.selectFirstItem();
         productItem = new ProductItem(driver);
-        List <String> bookInfo = productItem.getItemInfo();
-        Assert.assertEquals(testBookInfo, bookInfo);
+
+        Book book = productItem.getItemInfo();
+
+        String infoTestBook = testBook.getTitle() + " " + testBook.getAuthor();
+        String infoBook = book.getTitle() + " " + book.getAuthor();
+        Assert.assertEquals("Objects are not equal!", infoTestBook, infoBook);
     }
 
     @Test
-    public void secondBookInfoTest() {
-        List<String> testBookInfo = new ArrayList<>();
-        testBookInfo.add("Title: Effective Java");
-        testBookInfo.add("Author: Joshua Bloch");
-        testBookInfo.add("Kindle Price: $29.69");
-        testBookInfo.add("Paperback Price: $41.39");
-        testBookInfo.add("Is a Best Seller: true");
+    public void compareTitlesFromSearch () {
         mainPage.selectBooksOption();
         mainPage.typeIntoSearchField(productName);
         mainPage.clickSearchButton();
-        productPage = new ProductPage(driver);
-        productPage.selectSecondItem();
+
+        productPage = new ProductsPage(driver);
+        productPage.selectFirstItem();
+
         productItem = new ProductItem(driver);
-        List <String> bookInfo = productItem.getItemInfo();
-        Assert.assertEquals(testBookInfo, bookInfo);
+        Book testBook = new Book(productItem.getTitle(), productItem.getAuthor(), productItem.getBestSellerInfo());
+        productItem.goToMainPage();
+
+        mainPage.typeIntoSearchField("Java");
+        mainPage.clickSearchButton();
+
+        productPage = new ProductsPage(driver);
+        boolean isBooksListContainsTestBook = productPage.compareBooksFromSearchPage(testBook);
+        Assert.assertTrue(isBooksListContainsTestBook);
+    }
+
+    @Test
+    public void compareTestBookWithListOfBooks() {
+        mainPage.selectBooksOption();
+        mainPage.typeIntoSearchField(productName);
+        mainPage.clickSearchButton();
+
+        productPage = new ProductsPage(driver);
+        productPage.selectFirstItem();
+
+        productItem = new ProductItem(driver);
+        Book testBook = productItem.getItemInfo();
+        productItem.goToMainPage();
+
+        mainPage.typeIntoSearchField("Java");
+        mainPage.clickSearchButton();
+
+        productPage = new ProductsPage(driver);
+        boolean isContainTestBook = productPage.compareBooks(testBook);
+        Assert.assertTrue(isContainTestBook);
     }
 
     @After
